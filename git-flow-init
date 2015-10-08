@@ -309,6 +309,18 @@ cmd_default() {
 		git_do config gitflow.prefix.versiontag "$prefix"
 	fi
 
+	# Sprint branches
+	if ! git config --get gitflow.prefix.sprint >/dev/null 2>&1 || flag force; then
+		default_suggestion=$(git config --get gitflow.prefix.sprint || echo sprints/)
+		printf "Sprint branches? [$default_suggestion] "
+		if noflag defaults; then
+			read answer
+		else
+			printf "\n"
+		fi
+		[ "$answer" = "-" ] && prefix= || prefix=${answer:-$default_suggestion}
+		git_do config gitflow.prefix.sprint "$prefix"
+	fi
 
 	# TODO: what to do with origin?
 }
